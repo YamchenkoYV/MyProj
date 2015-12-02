@@ -1,0 +1,14 @@
+C:\Users\Юрий\Desktop\.net\ParticleGui\obj\Debug\ParticleGui.exe
+C:\Users\Юрий\Desktop\.net\ParticleGui\obj\Debug\ParticleGui.pdb
+C:\Users\Юрий\Desktop\.net\ParticleGui\bin\Debug\ParticleGui.exe
+C:\Users\Юрий\Desktop\.net\ParticleGui\bin\Debug\ParticleGui.pdb
+C:\Users\Юрий\Desktop\.net\ParticleGui\bin\Debug\Functions.dll
+C:\Users\Юрий\Desktop\.net\ParticleGui\bin\Debug\ParticleSwarm.dll
+C:\Users\Юрий\Desktop\.net\ParticleGui\bin\Debug\ZedGraph.dll
+C:\Users\Юрий\Desktop\.net\ParticleGui\bin\Debug\Functions.pdb
+C:\Users\Юрий\Desktop\.net\ParticleGui\bin\Debug\ParticleSwarm.pdb
+C:\Users\Юрий\Desktop\.net\ParticleGui\obj\Debug\ParticleGui.csprojResolveAssemblyReference.cache
+C:\Users\Юрий\Desktop\.net\ParticleGui\obj\Debug\ParticleGui.MainForm.resources
+C:\Users\Юрий\Desktop\.net\ParticleGui\obj\Debug\ParticleGui.Properties.Resources.resources
+C:\Users\Юрий\Desktop\.net\ParticleGui\obj\Debug\ParticleGui.csproj.GenerateResource.Cache
+C:\Users\Юрий\Desktop\.net\ParticleGui\obj\Debug\ParticleGui.Form1.resources

@@ -1,0 +1,9 @@
+C:\Users\Юрий\Desktop\.net\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+C:\Users\Юрий\Desktop\.net\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+C:\Users\Юрий\Desktop\.net\ConsoleApplication1\bin\Debug\Functions.dll
+C:\Users\Юрий\Desktop\.net\ConsoleApplication1\bin\Debug\ParticleSwarm.dll
+C:\Users\Юрий\Desktop\.net\ConsoleApplication1\bin\Debug\Functions.pdb
+C:\Users\Юрий\Desktop\.net\ConsoleApplication1\bin\Debug\ParticleSwarm.pdb
+C:\Users\Юрий\Desktop\.net\ConsoleApplication1\obj\Debug\Particle_MyTask_console.csprojResolveAssemblyReference.cache
+C:\Users\Юрий\Desktop\.net\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\Users\Юрий\Desktop\.net\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb

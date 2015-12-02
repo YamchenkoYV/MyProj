@@ -1,0 +1,9 @@
+C:\Users\Юрий\Desktop\.net\Particle_Schwefel_console\bin\Debug\Particle_Schwefel_console.exe
+C:\Users\Юрий\Desktop\.net\Particle_Schwefel_console\bin\Debug\Particle_Schwefel_console.pdb
+C:\Users\Юрий\Desktop\.net\Particle_Schwefel_console\bin\Debug\Functions.dll
+C:\Users\Юрий\Desktop\.net\Particle_Schwefel_console\bin\Debug\ParticleSwarm.dll
+C:\Users\Юрий\Desktop\.net\Particle_Schwefel_console\bin\Debug\ParticleSwarm.pdb
+C:\Users\Юрий\Desktop\.net\Particle_Schwefel_console\bin\Debug\Functions.pdb
+C:\Users\Юрий\Desktop\.net\Particle_Schwefel_console\obj\Debug\Particle_Schwefel_console.csprojResolveAssemblyReference.cache
+C:\Users\Юрий\Desktop\.net\Particle_Schwefel_console\obj\Debug\Particle_Schwefel_console.exe
+C:\Users\Юрий\Desktop\.net\Particle_Schwefel_console\obj\Debug\Particle_Schwefel_console.pdb

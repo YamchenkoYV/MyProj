@@ -1,0 +1,10 @@
+H:\Projects\particleswarm\.net\ParticleSwarm\bin\Debug\ParticleSwarm.dll
+H:\Projects\particleswarm\.net\ParticleSwarm\bin\Debug\ParticleSwarm.pdb
+H:\Projects\particleswarm\.net\ParticleSwarm\obj\Debug\ResolveAssemblyReference.cache
+H:\Projects\particleswarm\.net\ParticleSwarm\obj\Debug\ParticleSwarm.dll
+H:\Projects\particleswarm\.net\ParticleSwarm\obj\Debug\ParticleSwarm.pdb
+H:\Projects\particleswarm\.net\ParticleSwarm\bin\Release\ParticleSwarm.dll
+H:\Projects\particleswarm\.net\ParticleSwarm\bin\Release\ParticleSwarm.pdb
+H:\Projects\particleswarm\.net\ParticleSwarm\obj\Release\ResolveAssemblyReference.cache
+H:\Projects\particleswarm\.net\ParticleSwarm\obj\Release\ParticleSwarm.dll
+H:\Projects\particleswarm\.net\ParticleSwarm\obj\Release\ParticleSwarm.pdb
