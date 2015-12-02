@@ -43,7 +43,7 @@ namespace ParticleGui
 
 		void CreateTasks ()
 		{
-            Application.Run(new Form1());
+
 			_tasks.Add (new TaskGuiX2 ());
 			_tasks.Add (new TaskGuiShwefel ());
 			_tasks.Add (new TaskGuiRastrigin ());
