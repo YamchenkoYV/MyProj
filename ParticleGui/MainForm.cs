@@ -361,6 +361,7 @@ namespace ParticleGui
                 builder.AppendFormat("Среднее число обращений к ц.ф. = {0}\r\n\n", COS);
                 builder.AppendFormat("Лучшее значение ц.ф. = {0}\r\n\n", BestFuncValue);
                 builder.AppendFormat("Вероятность нахождения нахождения экстремума = {0}\r\n\n", theo_frec);
+
             return builder.ToString();
         }
 
