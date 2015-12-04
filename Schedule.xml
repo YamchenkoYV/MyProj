@@ -4,50 +4,50 @@
   <year name="2014-15">
     <semester number="1">
       <day name="MON">
-        <subject time_begin="8:30" type="lection">Физика</subject>
-        <subject time_begin="10:15" type="lection">Дискретная математика</subject>
-        <subject time_begin="12:00" type="lection">Логика</subject>
-        <subject time_begin="13:50" type="lection">МИМАПР</subject>
+        <subject time_begin="8:30" type="lection" classroom="123s">Физика</subject>
+        <subject time_begin="10:15" type="lection" classroom="133s">Дискретная математика</subject>
+        <subject time_begin="12:00" type="lection" classroom="133s">Логика</subject>
+        <subject time_begin="13:50" type="lection" classroom="323s">МИМАПР</subject>
       </day>
       <day name="TUE">
-        <subject time_begin="8:30" type="seminar">Физика</subject>
-        <subject time_begin="8:30" type="seminar">Логика</subject>
+        <subject time_begin="12:00" type="seminar" classroom="123l">Физика</subject>
+        <subject time_begin="15:40" type="seminar" classroom="323l">Логика</subject>
       </day>
       <day name="WED">
-        <subject time_begin="8:30" type="lection">Дискретная математика</subject>
-        <subject time_begin="8:30" type="lection">Экология</subject>
+        <subject time_begin="8:30" type="lection" classroom="13s">Дискретная математика</subject>
+        <subject time_begin="15:40" type="lection" classroom="123l">Экология</subject>
       </day>
       <day name="THU">
-        <subject time_begin="8:30" type="lection">Экология</subject>
+        <subject time_begin="8:30" type="lection" classroom="123">Экология</subject>
       </day>
       <day name="FRI">
-        <subject time_begin="8:30"  type="lab" duration="2">Основы программирования</subject>
-        <subject time_begin="12:00" type="seminar" >Архитектура ЭВМ</subject>
+        <subject time_begin="8:30"  type="lab" duration="2" classroom="133s">Основы программирования</subject>
+        <subject time_begin="12:00" type="seminar" classroom="133">Архитектура ЭВМ</subject>
       </day>
       <day name="SUN"/>
     </semester>
     <semester number="2">
       <day name="MON">
-        <subject time_begin="8:30" ></subject>
-        <subject time_begin="8:30" ></subject>
-        <subject time_begin="8:30" ></subject>
+        <subject time_begin="8:30" type="lection" classroom="507">Экономика</subject>
+        <subject time_begin="10:15" type="lection" classroom="507">Дискретная математика</subject>
+        <subject time_begin="12:00" type="lection" classroom="507">ТФКП</subject>
+        <subject time_begin="13:50" type="lection" classroom="507">ММАПР</subject>
       </day>
       <day name="TUE">
-        <subject time_begin="8:30" ></subject>
-        <subject time_begin="8:30" ></subject>
+        <subject time_begin="12:00" classroom="420" type="seminar">Дискретная математика</subject>
+        <subject time_begin="13:50" classroom="420" type="seminar">ТФКП</subject>
+        <subject time_begin="15:40" classroom="388" type="seminar">Экономика</subject>
       </day>
       <day name="WED">
-        <subject time_begin="8:30" ></subject>
-        <subject time_begin="8:30" ></subject>
       </day>
       <day name="THU">
+        <subject time_begin="8:30" type="lection" classroom="421s">Технологии Интернет</subject>
+        <subject time_begin="10:15" type="lection" classroom="421s">Технологии Интернет</subject>
+        <subject time_begin="12:00" type="lection"  classroom="421s">Программирование технологических процессов</subject>
       </day>
       <day name="FRI">
-        <subject time_begin="8:30"  ></subject>
-        <subject time_begin="8:30" ></subject>
       </day>
       <day name="SUN">
-        <subject time_begin="8:30"></subject>
       </day>
     </semester>
   </year>

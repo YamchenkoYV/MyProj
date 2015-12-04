@@ -15,57 +15,70 @@
     </td>
  
     <td class="SubCell">8:30</td>
-    <td  class="Cell">
-      <span><xsl:value-of select="./subject/@type"/></span>&#160;
-      <xsl:value-of select="./subject[@time_begin='8:30']"/> 
-    </td>            
+            <xsl:call-template name="SubjOfTime">
+              <xsl:with-param name="time">8:30</xsl:with-param>
+            </xsl:call-template>           
     </tr>
     <tr>
       <td class="SubCell">10:15</td>
-      <td class="Cell">
-        <span> <xsl:value-of select="./subject[@time_begin='10:15']/@type"/></span>&#160;
-        <xsl:value-of select="./subject[@time_begin='10:15']"/> 
-      </td>
+      <xsl:call-template name="SubjOfTime">
+        <xsl:with-param name="time">10:15</xsl:with-param>
+      </xsl:call-template>
     </tr>
     <tr>
       <td class="SubCell">12:00</td>
-      <td class="Cell">
-        <span><xsl:value-of select="./subject[@time_begin='12:00']/@type"/></span>&#160;
-        <xsl:value-of select="./subject[@time_begin='12:00']"/> 
-      </td>
+            <xsl:call-template name="SubjOfTime">
+            <xsl:with-param name="time">12:00</xsl:with-param>
+            </xsl:call-template> 
     </tr>
     <tr>
       <td class="SubCell">13:50</td>
-      <td class="Cell">
-        <span><xsl:value-of select="./subject[@time_begin='13:50']/@type"/></span>&#160;
-        <xsl:value-of select="./subject[@time_begin='13:50']"/>
-      </td>
+      <xsl:call-template name="SubjOfTime">
+        <xsl:with-param name="time">13:50</xsl:with-param>
+      </xsl:call-template>
     </tr>
     <tr>
       <td class="SubCell">15:40</td>
-      <td class="Cell">
-        <span><xsl:value-of select="./subject[@time_begin='15:40']/@type"/></span>&#160;
-        <xsl:value-of select="./subject[@time_begin='15:40']"/> 
-      </td>
+      <xsl:call-template name="SubjOfTime">
+        <xsl:with-param name="time">15:40</xsl:with-param>
+      </xsl:call-template>
     </tr>
     <tr>
       <td class="SubCell">17:25</td>
-      <td class="Cell">
-        <span><xsl:value-of select="./subject[@time_begin='17:25']/@type"/></span>&#160;
-        <xsl:value-of select="./subject[@time_begin='17:25']"/>
-      </td>
+      <xsl:call-template name="SubjOfTime">
+        <xsl:with-param name="time">17:25</xsl:with-param>
+      </xsl:call-template>
     </tr>
     <tr>
       <td class="SubCell">19:10</td>
-      <td class="Cell">
-        <span><xsl:value-of select="./subject[@time_begin='19:10']/@type"/></span>&#160;
-        <xsl:value-of select="./subject[@time_begin='19:10']"/>
-      </td>
+      <xsl:call-template name="SubjOfTime">
+        <xsl:with-param name="time">19:10</xsl:with-param> 
+      </xsl:call-template>
     </tr>
           </table>
         </td>
     </tr>
-  </xsl:template>  
+  </xsl:template>
+  
+  
+  
+  <xsl:template name="SubjOfTime">
+    <xsl:param name ="time"/>
+    <td class="Cell">
+      <xsl:variable name="x" select="./subject[@time_begin = $time]"/>
+      <span>
+        <xsl:value-of select="./subject[@time_begin = $time]/@type"/>
+      </span> &#160;
+      <xsl:value-of select="$x"/>
+      <xsl:if test="$x != ''">
+        <span>
+          ауд.<xsl:value-of select="./subject[@time_begin = $time]/@classroom"/>
+        </span>
+      </xsl:if>
+    </td>
+  </xsl:template>
+  
+  
     <xsl:template match="/">
       <html>
         <head>
