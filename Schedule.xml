@@ -1,53 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="Schedule.xslt"?>
+<?xml-stylesheet type="text/xsl" href="./Schedule.xslt"?>
 <schedule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Schedule.xsd">
   <year name="2014-15">
     <semester number="1">
       <day name="MON">
-        <subject time_begin="8:30" type="lection">Физика</subject>
-        <subject time_begin="10:15" type="lection">Дискретная математика</subject>
-        <subject time_begin="12:00" type="lection">Логика</subject>
-        <subject time_begin="13:50" type="lection">МИМАПР</subject>
+        <subject time_begin="8:30" type="lection" duration="1">Физика</subject>
+        <subject time_begin="12:00" type="lection" duration="1">Логика</subject>
+        <subject time_begin="13:50" type="lection" duration="1">МИМАПР</subject>
       </day>
       <day name="TUE">
-        <subject time_begin="8:30" type="seminar">Физика</subject>
-        <subject time_begin="8:30" type="seminar">Логика</subject>
+        <subject time_begin="8:30" type="seminar" duration="1">Физика</subject>
+        <subject time_begin="10:15" type="seminar" duration="1">Логика</subject>
       </day>
       <day name="WED">
-        <subject time_begin="8:30" type="lection">Дискретная математика</subject>
-        <subject time_begin="8:30" type="lection">Экология</subject>
+        <subject time_begin="12:00" type="lection" duration="2">Дискретная математика</subject>
+        <subject time_begin="15:40" type="lection" duration="1">Экология</subject>
       </day>
       <day name="THU">
-        <subject time_begin="8:30" type="lection">Экология</subject>
+        <subject time_begin="8:30" type="lection" duration="1">Экология</subject>
       </day>
       <day name="FRI">
         <subject time_begin="8:30"  type="lab" duration="2">Основы программирования</subject>
-        <subject time_begin="12:00" type="seminar" >Архитектура ЭВМ</subject>
+        <subject time_begin="12:00" type="seminar" duration="1">Архитектура ЭВМ</subject>
       </day>
       <day name="SUN"/>
     </semester>
     <semester number="2">
       <day name="MON">
-        <subject time_begin="8:30" ></subject>
-        <subject time_begin="8:30" ></subject>
-        <subject time_begin="8:30" ></subject>
+        <subject time_begin="8:30" duration="1"></subject>
+        <subject time_begin="8:30" duration="1"></subject>
+        <subject time_begin="8:30" duration="1"></subject>
       </day>
       <day name="TUE">
-        <subject time_begin="8:30" ></subject>
-        <subject time_begin="8:30" ></subject>
+        <subject time_begin="8:30" duration="1"></subject>
+        <subject time_begin="8:30" duration="1"></subject>
       </day>
       <day name="WED">
-        <subject time_begin="8:30" ></subject>
-        <subject time_begin="8:30" ></subject>
+        <subject time_begin="8:30" duration="1"></subject>
+        <subject time_begin="8:30" duration="1" ></subject>
       </day>
       <day name="THU">
       </day>
       <day name="FRI">
-        <subject time_begin="8:30"  ></subject>
-        <subject time_begin="8:30" ></subject>
+        <subject time_begin="8:30" duration="1" ></subject>
+        <subject time_begin="8:30" duration="1"></subject>
       </day>
       <day name="SUN">
-        <subject time_begin="8:30"></subject>
+        <subject time_begin="8:30" duration="1"></subject>
       </day>
     </semester>
   </year>

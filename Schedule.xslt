@@ -9,60 +9,128 @@
     <tr>
       <td colspan="3">
         <table border="1">
+          <xsl:variable name="fir_dur" select="./subject[@time_begin='8:30']/@duration"/>
           <tr>
-    <td rowspan ="7" class="SubCell">
-      <xsl:value-of select="@name"/>
-    </td>
- 
-    <td class="SubCell">8:30</td>
-    <td  class="Cell">
-      <span><xsl:value-of select="./subject/@type"/></span>&#160;
-      <xsl:value-of select="./subject[@time_begin='8:30']"/> 
-    </td>            
-    </tr>
+            <td rowspan ="7" class="SubCell">
+               <xsl:value-of select="@name"/>
+            </td>
+            
+            <td class="SubCell">8:30</td>
+            <td rowspan="{$fir_dur}" class="Cell">
+             <span><xsl:value-of select="./subject/@type"/></span>  &#160;
+             <xsl:value-of select="./subject[@time_begin='8:30']"/> 
+            </td>            
+          </tr> 
+          <xsl:variable name="sec_dur" >
+            <xsl:choose>
+              <xsl:when test="$fir_dur != 1">
+                <xsl:value-of select="$fir_dur -1"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="./subject[@time_begin='10:15']/@duration"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+        <tr>
+         <td  class="SubCell"> 10:15 <xsl:value-of select="$sec_dur"/></td>
+          <xsl:if test=" $fir_dur = 1 ">
+            <td rowspan="{$sec_dur}" class="Cell">
+             <span>
+              <xsl:value-of select="./subject[@time_begin='10:15']/@type"/>
+             </span> &#160;
+            <xsl:value-of select="./subject[@time_begin='10:15']"/>
+            </td>
+          </xsl:if>
+      </tr>
+        <xsl:variable name="thi_dur">
+            <xsl:choose>
+              <xsl:when test="$sec_dur != 1">
+                <xsl:value-of select="$sec_dur -1"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="./subject[@time_begin='12:00']/@duration"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
     <tr>
-      <td class="SubCell">10:15</td>
-      <td class="Cell">
-        <span> <xsl:value-of select="./subject[@time_begin='10:15']/@type"/></span>&#160;
-        <xsl:value-of select="./subject[@time_begin='10:15']"/> 
+      <td  class="SubCell">12:00 <xsl:value-of select="$sec_dur"/></td>
+      <xsl:if test=" $sec_dur = 1">
+      <td rowspan="{$thi_dur}" class="Cell">
+        <span><xsl:value-of select="./subject[@time_begin='12:00']/@type"/></span> &#160;
+        <xsl:value-of select="./subject[@time_begin='12:00']"/>
+        
       </td>
+      </xsl:if>
     </tr>
+           <xsl:variable name="fou_dur">
+            <xsl:choose>
+              <xsl:when test="$thi_dur != 1">
+                <xsl:value-of select="$thi_dur -1"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="./subject[@time_begin='13:50']/@duration"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
     <tr>
-      <td class="SubCell">12:00</td>
-      <td class="Cell">
-        <span><xsl:value-of select="./subject[@time_begin='12:00']/@type"/></span>&#160;
-        <xsl:value-of select="./subject[@time_begin='12:00']"/> 
-      </td>
-    </tr>
-    <tr>
-      <td class="SubCell">13:50</td>
-      <td class="Cell">
-        <span><xsl:value-of select="./subject[@time_begin='13:50']/@type"/></span>&#160;
+      <td  class="SubCell">13:50</td>
+      <xsl:if test=" $thi_dur = 1 ">
+      <td rowspan="{$fou_dur}" class="Cell">
+        <span><xsl:value-of select="./subject[@time_begin='13:50']/@type"/></span> &#160;
         <xsl:value-of select="./subject[@time_begin='13:50']"/>
+        <xsl:value-of select="./subject[@time_begin='13:50']/@duration"/>
       </td>
+      </xsl:if>
     </tr>
+          <xsl:variable name="fif_dur">
+            <xsl:choose>
+              <xsl:when test="$fou_dur != 1">
+                <xsl:value-of select="$fou_dur -1"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="./subject[@time_begin='15:40']/@duration"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
     <tr>
-      <td class="SubCell">15:40</td>
-      <td class="Cell">
-        <span><xsl:value-of select="./subject[@time_begin='15:40']/@type"/></span>&#160;
+      <td  class="SubCell">15:40</td>
+      <xsl:if test=" $fou_dur = 1 or $fou_dur = ''">
+      <td rowspan="{$fif_dur}" class="Cell">
+        <span><xsl:value-of select="./subject[@time_begin='15:40']/@type"/></span> &#160;
         <xsl:value-of select="./subject[@time_begin='15:40']"/> 
       </td>
+      </xsl:if>
     </tr>
+         <xsl:variable name="six_dur">
+            <xsl:choose>
+              <xsl:when test="$fif_dur != 1">
+                <xsl:value-of select="$fif_dur -1"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="./subject[@time_begin='17:25']/@duration"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
     <tr>
-      <td class="SubCell">17:25</td>
-      <td class="Cell">
-        <span><xsl:value-of select="./subject[@time_begin='17:25']/@type"/></span>&#160;
+      <td  class="SubCell">17:25</td>
+      <xsl:if test=" $fif_dur = 1 ">
+      <td rowspan="{$six_dur}" class="Cell">
+        <span><xsl:value-of select="./subject[@time_begin='17:25']/@type"/></span> &#160;
         <xsl:value-of select="./subject[@time_begin='17:25']"/>
       </td>
+      </xsl:if>        
     </tr>
+
     <tr>
       <td class="SubCell">19:10</td>
+      <xsl:if test=" $six_dur = 1 ">
       <td class="Cell">
-        <span><xsl:value-of select="./subject[@time_begin='19:10']/@type"/></span>&#160;
-        <xsl:value-of select="./subject[@time_begin='19:10']"/>
+        <span><xsl:value-of select="./subject[@time_begin='19:10']/@type"/></span> &#160;
+        <xsl:value-of select="../subject[@time_begin='19:10']"/>
       </td>
+      </xsl:if>
     </tr>
-          </table>
+    </table>
         </td>
     </tr>
   </xsl:template>  
@@ -78,7 +146,7 @@
             font-weight:lighter;
             }
 
-
+           
             td {
             border-spacing:15px;
             text-align:center;
