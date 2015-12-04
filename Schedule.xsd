@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="schedule">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="year" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="2" minOccurs="2" name="semester">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="6" name="day">
+                      <xs:complexType mixed="true">
+                        <xs:sequence minOccurs="0">
+                          <xs:element maxOccurs="7" name="subject">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute name="time_begin" use="required">
+                                    <xs:simpleType>
+                                      <xs:restriction base="xs:string">                                     
+                                        <xs:enumeration value="8:30"/>
+                                        <xs:enumeration value="10:15"/>
+                                        <xs:enumeration value="12:00"/>
+                                        <xs:enumeration value="13:50"/>
+                                        <xs:enumeration value="15:40"/>
+                                        <xs:enumeration value="17:25"/>
+                                        <xs:enumeration value="19:10"/>
+                                      </xs:restriction>
+                                    </xs:simpleType>
+                                  </xs:attribute>                                                                     
+                                  <xs:attribute name="type" default="lection">
+                                    <xs:simpleType>
+                                      <xs:restriction base="xs:string">
+                                        <xs:enumeration value="lection"/>
+                                        <xs:enumeration value="seminar"/>                                    
+                                        <xs:enumeration value="lab"/>
+                                      </xs:restriction>
+                                    </xs:simpleType>
+                                  </xs:attribute>
+                                  <xs:attribute name="duration" default="1">
+                                    <xs:simpleType>
+                                      <xs:restriction base="xs:int">
+                                        <xs:pattern value="[1-7]"/>
+                                      </xs:restriction>
+                                    </xs:simpleType>
+                                  </xs:attribute>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" use="required">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:string">                         
+                              <xs:enumeration value="MON"/>
+                              <xs:enumeration value="TUE"/>
+                              <xs:enumeration value="WED"/>
+                              <xs:enumeration value="THU"/>
+                              <xs:enumeration value="FRI"/>
+                              <xs:enumeration value="SUN"/>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:attribute>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="number">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:int">
+                        <xs:pattern value="[12]"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" use="required" >
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:pattern value="[2-9][0-9]{3}-([0-9]{2}|[2-9][0-9]{3})"/>
+                </xs:restriction>
+              </xs:simpleType> 
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
