@@ -168,10 +168,13 @@ namespace ParticleGui
         double E = 0.000001;
         int  dI = 0;
 
+        Random rand = new Random();
+
 		int RunIterations (int iterationCount)
 		{
             int i = 0;
             System.Collections.ArrayList list = new System.Collections.ArrayList();
+            int k = (int)(0.8*MaxCountOfRuns/(_swarm.Size-2.0)); //Шаг
 
 			if (_swarm == null)
 			{
@@ -182,6 +185,21 @@ namespace ParticleGui
 
             for (i = 0; i < iterationCount; i++)
             {
+
+                if (i == k)
+                {
+                    k += k;
+                    int first, second;
+                    do
+                    {
+                        first = rand.Next(0, _swarm.Size - 1);
+                        second = rand.Next(0, _swarm.Size - 1);
+                    } while ((first == second) && _swarm.Particles[first].IsNeighbours(second));
+                    _swarm.Particles[first].AddNeighbour(second);
+                    _swarm.Particles[second].AddNeighbour(first);
+
+                }
+
                 if(writeToFile.Checked)
                   list.Add(_swarm.BestFinalFunc);
 
@@ -337,7 +355,7 @@ namespace ParticleGui
 			RunIterations (1000);
 		}
 
-        int countOfRuns = 100000;
+        int MaxCountOfRuns = 100000;
 
         
         int N = 1000; //число испытаний
@@ -363,7 +381,7 @@ namespace ParticleGui
 
 //             do
 //             {
-                RunIterations(countOfRuns);
+                RunIterations(MaxCountOfRuns);
 //                 if (dI == 20)
 //                 {
 // 

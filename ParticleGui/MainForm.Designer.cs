@@ -41,6 +41,7 @@ namespace ParticleGui
             System.Windows.Forms.Label label8;
             System.Windows.Forms.Label label7;
             System.Windows.Forms.GroupBox groupBox3;
+            this.writeToFile = new System.Windows.Forms.CheckBox();
             this._swarmSize = new System.Windows.Forms.NumericUpDown();
             this._dimension = new System.Windows.Forms.NumericUpDown();
             this._globalBestRatio = new System.Windows.Forms.TextBox();
@@ -57,7 +58,6 @@ namespace ParticleGui
             this._bestPosition = new System.Windows.Forms.TextBox();
             this._swarmGraph = new ZedGraph.ZedGraphControl();
             this._errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.writeToFile = new System.Windows.Forms.CheckBox();
             algorithmBox = new System.Windows.Forms.GroupBox();
             label6 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
@@ -100,6 +100,16 @@ namespace ParticleGui
             algorithmBox.TabIndex = 0;
             algorithmBox.TabStop = false;
             algorithmBox.Text = "Параметры алгоритма";
+            // 
+            // writeToFile
+            // 
+            this.writeToFile.AutoSize = true;
+            this.writeToFile.Location = new System.Drawing.Point(6, 256);
+            this.writeToFile.Name = "writeToFile";
+            this.writeToFile.Size = new System.Drawing.Size(101, 17);
+            this.writeToFile.TabIndex = 6;
+            this.writeToFile.Text = "Запись в файл";
+            this.writeToFile.UseVisualStyleBackColor = true;
             // 
             // _swarmSize
             // 
@@ -151,11 +161,11 @@ namespace ParticleGui
             // 
             // _globalBestRatio
             // 
-            this._globalBestRatio.Location = new System.Drawing.Point(268, 183);
+            this._globalBestRatio.Location = new System.Drawing.Point(262, 183);
             this._globalBestRatio.Name = "_globalBestRatio";
             this._globalBestRatio.Size = new System.Drawing.Size(67, 20);
             this._globalBestRatio.TabIndex = 4;
-            this._globalBestRatio.Text = "5";
+            this._globalBestRatio.Text = "1.4";
             this._globalBestRatio.TextChanged += new System.EventHandler(this._globalBestRatio_TextChanged);
             // 
             // label5
@@ -182,7 +192,7 @@ namespace ParticleGui
             this._localBestRatio.Name = "_localBestRatio";
             this._localBestRatio.Size = new System.Drawing.Size(67, 20);
             this._localBestRatio.TabIndex = 3;
-            this._localBestRatio.Text = "2";
+            this._localBestRatio.Text = "1.4";
             this._localBestRatio.TextChanged += new System.EventHandler(this._localBestRatio_TextChanged);
             // 
             // label3
@@ -200,7 +210,7 @@ namespace ParticleGui
             this._currentVelocityRatio.Name = "_currentVelocityRatio";
             this._currentVelocityRatio.Size = new System.Drawing.Size(67, 20);
             this._currentVelocityRatio.TabIndex = 2;
-            this._currentVelocityRatio.Text = "0.3";
+            this._currentVelocityRatio.Text = "0.9";
             this._currentVelocityRatio.TextChanged += new System.EventHandler(this._currentVelocityRatio_TextChanged);
             // 
             // label2
@@ -391,16 +401,6 @@ namespace ParticleGui
             // _errorProvider
             // 
             this._errorProvider.ContainerControl = this;
-            // 
-            // writeToFile
-            // 
-            this.writeToFile.AutoSize = true;
-            this.writeToFile.Location = new System.Drawing.Point(6, 256);
-            this.writeToFile.Name = "writeToFile";
-            this.writeToFile.Size = new System.Drawing.Size(101, 17);
-            this.writeToFile.TabIndex = 6;
-            this.writeToFile.Text = "Запись в файл";
-            this.writeToFile.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

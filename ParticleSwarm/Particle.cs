@@ -9,18 +9,40 @@ namespace ParticleSwarm
 	/// </summary>
 	public class Particle
 	{
-		public Particle (Swarm swarm)
+		public Particle (Swarm swarm, int numberInSwarm, int swarmSize)
 		{
 			//_random = new Random ();
 			_swarm = swarm;
-            _currentPosition = GetInitPosition (swarm);
+
+            neighbours = new System.Collections.ArrayList();
+
+            //Топология - Кольцо
+            if (numberInSwarm == 0)
+            {
+                neighbours.Add(swarmSize - 1);
+                neighbours.Add(1);
+            }
+            else if (numberInSwarm == (swarmSize - 1))
+            {
+                neighbours.Add(0);
+                neighbours.Add(swarmSize - 2);
+            }
+            else
+            {
+                neighbours.Add(numberInSwarm - 1);
+                neighbours.Add(numberInSwarm + 1);
+            }
+
+
+                _currentPosition = GetInitPosition(swarm);
             double summ = 0.0;
             for (int i = 0; i < _swarm.Dimension; i++)
                 summ += _currentPosition[i];
 
-            Dist = Math.Abs(summ - 1.0);
+//            Dist = Math.Abs(summ - 1.0);
 
 			
+
 			_localBestPosition = (double[])_currentPosition.Clone ();
 
 //            if (Dist < Eps)
@@ -33,6 +55,29 @@ namespace ParticleSwarm
 			_velocity = GetInitVelocity (swarm);
 		}
 
+        /// <summary>
+        /// Соседи частицы
+        /// </summary>
+        System.Collections.ArrayList neighbours;
+
+        /// <summary>
+        /// Является ли даанная частица соседней с заданной
+        /// </summary>
+        public bool IsNeighbours(int second)
+        {
+            foreach (int neib in neighbours)
+                if (neib == second)
+                    return true;
+            return false; 
+        }
+
+        /// <summary>
+        /// Добавить соседа
+        /// </summary>
+        public void AddNeighbour(int newNeighbour)
+        {
+            neighbours.Add(newNeighbour);
+        }
 
 		double[] GetInitPosition (Swarm swarm)
 		{
@@ -107,7 +152,7 @@ namespace ParticleSwarm
 		/// </summary>
 		internal void NextIteration ()
 		{
-			CorrectVelocity ();
+			CorrectVelocity_mod1 ();
 			MoveSelf ();
 			CheckFinalFunc ();
 		}
@@ -193,6 +238,20 @@ namespace ParticleSwarm
             double localVelocityRatio = _random.NextDouble() * _swarm.LocalVelocityRatio;
             double globalVelocityRatio = _random.NextDouble() * _swarm.GlobalVelocityRatio;
 
+            double neighboursBestPosition = double.MaxValue;
+            int bestNeighbour = 0;
+
+            //Определение лучшего значения среди соседей
+            for (int i = 0; i < neighbours.Count; i++ )
+            {
+                double part_func = _swarm.Particles[i]._localBestFinalFunc;
+                if (part_func < neighboursBestPosition)
+                {
+                    neighboursBestPosition = part_func;
+                    bestNeighbour = i;
+                }
+            }
+
             for (int i = 0; i < _swarm.Dimension; i++)
             {
                 double newVelocity_part1 = _swarm.CurrentVelocityRatio *_velocity[i];
@@ -203,7 +262,7 @@ namespace ParticleSwarm
 
                 double newVelocity_part3 =
                     globalVelocityRatio *                  
-                    (_swarm.BestPosition[i] - _currentPosition[i]);
+                    (_swarm.Particles[bestNeighbour]._localBestPosition[i] - _currentPosition[i]);
 
                 _velocity[i] = newVelocity_part1 + newVelocity_part2 + newVelocity_part3;
 

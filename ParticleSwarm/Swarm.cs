@@ -71,7 +71,7 @@ namespace ParticleSwarm
 			Particle[] swarm = new Particle[swarmSize];
 			for (int i = 0; i < swarmSize; i++)
 			{
-				swarm[i] = new Particle (this);
+				swarm[i] = new Particle (this,i,swarmSize);
 			}
 
 			return swarm;
