@@ -92,7 +92,7 @@ namespace ParticleSwarm
 			get { return _particles; }
 		}
 
-		double _bestFinalFunc = double.MinValue;
+		double _bestFinalFunc = double.MaxValue;
         double _prevFinalFunc = 0.0;
 
 		/// <summary>
@@ -195,7 +195,7 @@ namespace ParticleSwarm
         {
             counter++;
 			double finalfunc = _task.FinalFunction (position);
-			if (finalfunc >= _bestFinalFunc)
+			if (finalfunc < _bestFinalFunc)
 			{
                 _prevFinalFunc = _bestFinalFunc;
 				_bestFinalFunc = finalfunc;

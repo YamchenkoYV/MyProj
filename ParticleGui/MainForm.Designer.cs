@@ -57,6 +57,7 @@ namespace ParticleGui
             this._bestPosition = new System.Windows.Forms.TextBox();
             this._swarmGraph = new ZedGraph.ZedGraphControl();
             this._errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.writeToFile = new System.Windows.Forms.CheckBox();
             algorithmBox = new System.Windows.Forms.GroupBox();
             label6 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
@@ -80,6 +81,7 @@ namespace ParticleGui
             // 
             // algorithmBox
             // 
+            algorithmBox.Controls.Add(this.writeToFile);
             algorithmBox.Controls.Add(this._swarmSize);
             algorithmBox.Controls.Add(this._dimension);
             algorithmBox.Controls.Add(label6);
@@ -101,7 +103,7 @@ namespace ParticleGui
             // 
             // _swarmSize
             // 
-            this._swarmSize.Location = new System.Drawing.Point(262, 275);
+            this._swarmSize.Location = new System.Drawing.Point(262, 224);
             this._swarmSize.Maximum = new decimal(new int[] {
             30000,
             0,
@@ -123,7 +125,7 @@ namespace ParticleGui
             // 
             // _dimension
             // 
-            this._dimension.Location = new System.Drawing.Point(262, 142);
+            this._dimension.Location = new System.Drawing.Point(262, 69);
             this._dimension.Minimum = new decimal(new int[] {
             2,
             0,
@@ -141,7 +143,7 @@ namespace ParticleGui
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new System.Drawing.Point(6, 282);
+            label6.Location = new System.Drawing.Point(6, 224);
             label6.Name = "label6";
             label6.Size = new System.Drawing.Size(103, 13);
             label6.TabIndex = 2;
@@ -149,7 +151,7 @@ namespace ParticleGui
             // 
             // _globalBestRatio
             // 
-            this._globalBestRatio.Location = new System.Drawing.Point(262, 244);
+            this._globalBestRatio.Location = new System.Drawing.Point(268, 183);
             this._globalBestRatio.Name = "_globalBestRatio";
             this._globalBestRatio.Size = new System.Drawing.Size(67, 20);
             this._globalBestRatio.TabIndex = 4;
@@ -159,7 +161,7 @@ namespace ParticleGui
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(6, 149);
+            label5.Location = new System.Drawing.Point(6, 71);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(113, 13);
             label5.TabIndex = 2;
@@ -168,7 +170,7 @@ namespace ParticleGui
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(6, 251);
+            label4.Location = new System.Drawing.Point(6, 186);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(206, 13);
             label4.TabIndex = 2;
@@ -176,7 +178,7 @@ namespace ParticleGui
             // 
             // _localBestRatio
             // 
-            this._localBestRatio.Location = new System.Drawing.Point(262, 201);
+            this._localBestRatio.Location = new System.Drawing.Point(262, 146);
             this._localBestRatio.Name = "_localBestRatio";
             this._localBestRatio.Size = new System.Drawing.Size(67, 20);
             this._localBestRatio.TabIndex = 3;
@@ -186,7 +188,7 @@ namespace ParticleGui
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(6, 208);
+            label3.Location = new System.Drawing.Point(6, 146);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(212, 13);
             label3.TabIndex = 2;
@@ -194,7 +196,7 @@ namespace ParticleGui
             // 
             // _currentVelocityRatio
             // 
-            this._currentVelocityRatio.Location = new System.Drawing.Point(262, 173);
+            this._currentVelocityRatio.Location = new System.Drawing.Point(262, 111);
             this._currentVelocityRatio.Name = "_currentVelocityRatio";
             this._currentVelocityRatio.Size = new System.Drawing.Size(67, 20);
             this._currentVelocityRatio.TabIndex = 2;
@@ -204,7 +206,7 @@ namespace ParticleGui
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(6, 180);
+            label2.Location = new System.Drawing.Point(6, 111);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(141, 13);
             label2.TabIndex = 2;
@@ -390,6 +392,16 @@ namespace ParticleGui
             // 
             this._errorProvider.ContainerControl = this;
             // 
+            // writeToFile
+            // 
+            this.writeToFile.AutoSize = true;
+            this.writeToFile.Location = new System.Drawing.Point(6, 256);
+            this.writeToFile.Name = "writeToFile";
+            this.writeToFile.Size = new System.Drawing.Size(101, 17);
+            this.writeToFile.TabIndex = 6;
+            this.writeToFile.Text = "Запись в файл";
+            this.writeToFile.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -432,6 +444,7 @@ namespace ParticleGui
 		private ZedGraph.ZedGraphControl _swarmGraph;
 		private System.Windows.Forms.ErrorProvider _errorProvider;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox writeToFile;
 	}
 }
 

@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace ParticleGui.Tasks
 {
-	class TaskGuiShwefel: ITaskGui
+	class TaskGuiShwefel : ITaskGui
 	{
 		double[] _minvalues;
 		double[] _maxvalues;

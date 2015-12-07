@@ -21,8 +21,8 @@ namespace Functions
 				result += x * x;
 			}
 
-			result -= GetPenalty (position, 10000.0);
-
+			result += GetPenalty (position, 10000.0);
+           
 			return result;
 		}
 	}

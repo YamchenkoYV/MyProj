@@ -23,13 +23,13 @@ namespace ParticleSwarm
 			
 			_localBestPosition = (double[])_currentPosition.Clone ();
 
-            if (Dist < Eps)
+//            if (Dist < Eps)
                 _localBestFinalFunc = swarm.FinalFunction(_currentPosition, Dist);
-            else
-            {
-                _localBestFinalFunc = Double.MinValue;
-                swarm.Swarm_Best_Dist(_currentPosition, Dist);
-            }
+  //          else
+//             {
+//                 _localBestFinalFunc = Double.MaxValue;
+//                 swarm.Swarm_Best_Dist(_currentPosition, Dist);
+//             }
 			_velocity = GetInitVelocity (swarm);
 		}
 
@@ -129,23 +129,23 @@ namespace ParticleSwarm
 
             double dist = Math.Abs(summ - 1.0);
 
-            if (dist < Eps)
-            {
+//            if (dist < Eps)
+ //           {
                 
                 double finalfunc = _swarm.FinalFunction(_currentPosition, dist);
-                if (finalfunc > _localBestFinalFunc)
+                if (finalfunc < _localBestFinalFunc)
                 {
                     Dist = dist;
                     _localBestFinalFunc = finalfunc;
                     _localBestPosition = (double[])(_currentPosition.Clone());
                 }
-            }
+/*            }
             else if (dist < Dist)
             {
                 Dist =_swarm.Swarm_Best_Dist(_currentPosition, dist);;
                 
                 _localBestPosition = (double[])(_currentPosition.Clone());
-            }
+            }*/
 		}
 
 		private void MoveSelf ()

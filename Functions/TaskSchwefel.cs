@@ -19,11 +19,13 @@ namespace Functions
 
 			foreach (double x in position)
 			{
-				result += -x * Math.Sin (Math.Sqrt (Math.Abs (x) ) );
+				result += x * Math.Sin (Math.Sqrt (Math.Abs (x) ) );
 			}
 
-			result += GetPenalty (position, 10000.0);
+            result *= -(1.0 / position.Length);
 
+			result += GetPenalty (position, 10000.0);
+         
 			return result;
 		}
 	}
