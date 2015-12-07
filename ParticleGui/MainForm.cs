@@ -223,7 +223,7 @@ namespace ParticleGui
                     {
                        
                         // If the line doesn't contain the word 'Second', write the line to the file.
-                        String str = counter.ToString() + " " + numb.ToString(); 
+                        String str = counter.ToString() + " " + numb; 
                         file.WriteLine(str);
                         counter++;
                     }

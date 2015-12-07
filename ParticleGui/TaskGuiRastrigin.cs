@@ -22,8 +22,8 @@ namespace ParticleGui.Tasks
 
 			for (int i = 0; i < dimension; i++)
 			{
-				_minvalues[i] = -5.12;
-				_maxvalues[i] = 5.12;
+				_minvalues[i] = -5;
+				_maxvalues[i] = 5;
 			}
 
 			Task task = new TaskRastrigin (_minvalues, _maxvalues);

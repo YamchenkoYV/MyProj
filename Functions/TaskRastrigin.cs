@@ -22,9 +22,9 @@ namespace Functions
 				result += x * x - 10.0 * Math.Cos (2.0 * Math.PI * x);
 			}
 
-            result *= 10.0 * position.Length;
+            result += 10.0 * position.Length;
 
-			result += 10.0 * MinValues.Length + GetPenalty (position, 10000.0);
+			result += GetPenalty (position, 10000.0);
 
             return result;
 		}
