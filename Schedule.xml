@@ -25,6 +25,7 @@
         <subject time_begin="12:00" type="seminar" classroom="133">Архитектура ЭВМ</subject>
       </day>
       <day name="SUN"/>
+      
     </semester>
     <semester number="2">
       <day name="MON">
