@@ -66,8 +66,32 @@ namespace ParticleSwarm
 		}
 
 
+        bool[] neighbours;
+
+        public bool IsNeighbours(int i, int j)
+        {
+            return neighbours[i*Size+j];
+        }
+
+        public void SetNeighbours(int i, int j)
+        {
+            neighbours[i * Size + j] = true;
+            neighbours[j * Size + i] = true;
+        }
+
 		Particle[] CreateParticles (int swarmSize)
 		{
+            neighbours = new bool[swarmSize*swarmSize];
+            for (int i = 1; i < swarmSize-1; i++)
+            {
+                neighbours[i * swarmSize + (i + 1)] = true;
+                neighbours[i * swarmSize + (i - 1)] = true;
+            }
+            neighbours[1] = true;
+            neighbours[swarmSize - 1] = true;
+            neighbours[(swarmSize-1)*swarmSize] = true;
+            neighbours[swarmSize*swarmSize - 2] = true;
+
 			Particle[] swarm = new Particle[swarmSize];
 			for (int i = 0; i < swarmSize; i++)
 			{

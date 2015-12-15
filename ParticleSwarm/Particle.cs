@@ -14,24 +14,25 @@ namespace ParticleSwarm
 			//_random = new Random ();
 			_swarm = swarm;
 
-            neighbours = new System.Collections.ArrayList();
+            partNumber = numberInSwarm;
+/*            neighbours = new System.Collections.ArrayList();*/
 
             //Топология - Кольцо
-            if (numberInSwarm == 0)
-            {
-                neighbours.Add(swarmSize - 1);
-                neighbours.Add(1);
-            }
-            else if (numberInSwarm == (swarmSize - 1))
-            {
-                neighbours.Add(0);
-                neighbours.Add(swarmSize - 2);
-            }
-            else
-            {
-                neighbours.Add(numberInSwarm - 1);
-                neighbours.Add(numberInSwarm + 1);
-            }
+//             if (numberInSwarm == 0)
+//             {
+//                 neighbours.Add(swarmSize - 1);
+//                 neighbours.Add(1);
+//             }
+//             else if (numberInSwarm == (swarmSize - 1))
+//             {
+//                 neighbours.Add(0);
+//                 neighbours.Add(swarmSize - 2);
+//             }
+//             else
+//             {
+//                 neighbours.Add(numberInSwarm - 1);
+//                 neighbours.Add(numberInSwarm + 1);
+//             }
 
 
                 _currentPosition = GetInitPosition(swarm);
@@ -55,29 +56,30 @@ namespace ParticleSwarm
 			_velocity = GetInitVelocity (swarm);
 		}
 
+        int partNumber;
         /// <summary>
         /// Соседи частицы
         /// </summary>
-        System.Collections.ArrayList neighbours;
+/*        System.Collections.ArrayList neighbours;*/
 
         /// <summary>
         /// Является ли даанная частица соседней с заданной
         /// </summary>
-        public bool IsNeighbours(int second)
-        {
-            foreach (int neib in neighbours)
-                if (neib == second)
-                    return true;
-            return false; 
-        }
+//         public bool IsNeighbours(int second)
+//         {
+//             foreach (int neib in neighbours)
+//                 if (neib == second)
+//                     return true;
+//             return false; 
+//         }
 
         /// <summary>
         /// Добавить соседа
         /// </summary>
-        public void AddNeighbour(int newNeighbour)
-        {
-            neighbours.Add(newNeighbour);
-        }
+//         public void AddNeighbour(int newNeighbour)
+//         {
+//             neighbours.Add(newNeighbour);
+//         }
 
 		double[] GetInitPosition (Swarm swarm)
 		{
@@ -242,13 +244,16 @@ namespace ParticleSwarm
             int bestNeighbour = 0;
 
             //Определение лучшего значения среди соседей
-            for (int i = 0; i < neighbours.Count; i++ )
+            for (int i = 0; i < _swarm.Size; i++ )
             {
-                double part_func = _swarm.Particles[i]._localBestFinalFunc;
-                if (part_func < neighboursBestPosition)
+                if (_swarm.IsNeighbours(partNumber, i))
                 {
-                    neighboursBestPosition = part_func;
-                    bestNeighbour = i;
+                    double part_func = _swarm.Particles[i]._localBestFinalFunc;
+                    if (part_func < neighboursBestPosition)
+                    {
+                        neighboursBestPosition = part_func;
+                        bestNeighbour = i;
+                    }
                 }
             }
 

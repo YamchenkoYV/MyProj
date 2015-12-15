@@ -170,11 +170,15 @@ namespace ParticleGui
 
         Random rand = new Random();
 
-		int RunIterations (int iterationCount)
+		int RunIterations (int iterationCount, bool wtf=true)
 		{
             int i = 0;
             System.Collections.ArrayList list = new System.Collections.ArrayList();
-            int k = (int)(0.8*MaxCountOfRuns/(_swarm.Size-2.0)); //Шаг
+            int dk = (int)(0.8*MaxCountOfRuns/(_swarm.Size-2.0)); //Шаг
+            int dsob = (int)(0.8 * MaxCountOfRuns / 5.0);//Шаг для собственного значения
+
+            int k = dk;
+            int sob = dsob;
 
 			if (_swarm == null)
 			{
@@ -183,21 +187,27 @@ namespace ParticleGui
 
 			Debug.Assert (_currentTask != null);
 
+
             for (i = 0; i < iterationCount; i++)
             {
 
+                if (i == sob)
+                {
+                    sob += dsob;
+                    double curVelRatio = _swarm.CurrentVelocityRatio;
+                    _swarm.SetCurrentVelocityRatio(curVelRatio - 0.1);
+                }
+
                 if (i == k)
                 {
-                    k += k;
+                    k += dk;
                     int first, second;
                     do
                     {
                         first = rand.Next(0, _swarm.Size - 1);
                         second = rand.Next(0, _swarm.Size - 1);
-                    } while ((first == second) && _swarm.Particles[first].IsNeighbours(second));
-                    _swarm.Particles[first].AddNeighbour(second);
-                    _swarm.Particles[second].AddNeighbour(first);
-
+                    } while ((first == second) && _swarm.IsNeighbours(first,second));
+                    _swarm.SetNeighbours(first,second);        
                 }
 
                 if(writeToFile.Checked)
@@ -219,10 +229,10 @@ namespace ParticleGui
 
             }
 
-            if (writeToFile.Checked)
+            if (writeToFile.Checked && wtf)
             {
                 
-                String path = "C:\\Users\\Юрий\\Desktop\\.net\\log";
+                String path = "C:\\Users\\Юрий\\Desktop\\.net\\log\\FIPS";
                 int files = 0;
                 System.IO.DirectoryInfo directoryInfo = new System.IO.DirectoryInfo(path);
             if (directoryInfo.Exists)
@@ -237,6 +247,8 @@ namespace ParticleGui
                 int counter = 0;
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@path))
                 {
+                    var ci = new CultureInfo("en-US");
+                    Thread.CurrentThread.CurrentCulture = ci;
                     foreach (double numb in list)
                     {
                        
@@ -358,13 +370,12 @@ namespace ParticleGui
         int MaxCountOfRuns = 100000;
 
         
-        int N = 1000; //число испытаний
+        int N = 10; //число испытаний
         int IterCounter = 0; //Число успешных попыток
         int CountOfSolv = 0; //Суммарное число вычислений целевой функции за все попытки
         double BestFuncValue = 0.0; //Лучшее значение ц.ф. за все попытки
         int Ix = 0; //Суммарная скорость сходимости за все попытки
        int GlobValueCounter = 0; //количество попыток достигших глобального экстремума
- 
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -379,39 +390,44 @@ namespace ParticleGui
 
 
 
-//             do
-//             {
-                RunIterations(MaxCountOfRuns);
-//                 if (dI == 20)
-//                 {
-// 
-//                 if (_swarm.BestFinalFunc > BestFuncValue)
-//                     BestFuncValue = _swarm.BestFinalFunc;
-// 
-//                 if (Math.Abs(_swarm.BestFinalFunc - 0.390013615128399) < 0.05) //Найден глобальный экстремум
-//                     GlobValueCounter++;
-// 
-//                
-//                     IterCounter++;
-//                     Ix += _swarm.Iteration - 10;
-//                     CountOfSolv += _swarm.Counter;
-//                 }
-//                 dI = 0;
-//                 
-// 
-//                 
-//                 Console.WriteLine(Iter);
-//                 Initialize();
-//                 Iter++;
-//                 
-//             } while (Iter <= N);
+            do
+            {
+                //Запись в файл только последней итерации
+                if(Iter == N-1)
+                    RunIterations(MaxCountOfRuns,true);
+                else
+                    RunIterations(MaxCountOfRuns, false);
 
-//             int dIx = Ix / IterCounter;
-//             int dCountOfSolv = CountOfSolv / IterCounter;
-//             double theo_frec = (double) IterCounter / (double)N;
-//             double glob_theo_frec = (double)GlobValueCounter / (double)N;
-// 
-//             _bestPosition.Text = PrintResult(dIx, dCountOfSolv, theo_frec, glob_theo_frec);
+                if (dI == 20)
+                {
+
+                if (_swarm.BestFinalFunc > BestFuncValue)
+                    BestFuncValue = _swarm.BestFinalFunc;
+
+                if (Math.Abs(_swarm.BestFinalFunc - 0.390013615128399) < 0.05) //Найден глобальный экстремум
+                    GlobValueCounter++;
+
+               
+                    IterCounter++;
+                    Ix += _swarm.Iteration - 10;
+                    CountOfSolv += _swarm.Counter;
+                }
+                dI = 0;
+                
+
+                
+                Console.WriteLine(Iter);
+                Initialize();
+                Iter++;
+                
+            } while (Iter < N);
+
+            int dIx = Ix / IterCounter;
+            int dCountOfSolv = CountOfSolv / IterCounter;
+            double theo_frec = (double) IterCounter / (double)N;
+            double glob_theo_frec = (double)GlobValueCounter / (double)N;
+
+            _bestPosition.Text = PrintResult(dIx, dCountOfSolv, theo_frec, glob_theo_frec);
         }
 
         public string PrintResult(int Id, int COS, double theo_frec, double glob_theo_frec)
