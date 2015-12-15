@@ -137,6 +137,15 @@ namespace ParticleSwarm
 		double[] _localBestPosition;
 		double _localBestFinalFunc;
 
+        public double[] LocalBestPosition
+        {
+            get { return _localBestPosition; }
+        }
+
+        public double LocalBestFinalFunc
+        {
+            get { return _localBestFinalFunc; }
+        }
 
 		double[] _velocity;
 
@@ -154,7 +163,7 @@ namespace ParticleSwarm
 		/// </summary>
 		internal void NextIteration ()
 		{
-			CorrectVelocity_mod1 ();
+			CorrectVelocity_SDPSO ();
 			MoveSelf ();
 			CheckFinalFunc ();
 		}
@@ -235,27 +244,13 @@ namespace ParticleSwarm
         }	// private void CorrectVelocity ()
 
 
-        private void CorrectVelocity_mod1()
+        private void CorrectVelocity_SDPSO()
         {
             double localVelocityRatio = _random.NextDouble() * _swarm.LocalVelocityRatio;
             double globalVelocityRatio = _random.NextDouble() * _swarm.GlobalVelocityRatio;
 
-            double neighboursBestPosition = double.MaxValue;
-            int bestNeighbour = 0;
-
             //Определение лучшего значения среди соседей
-            for (int i = 0; i < _swarm.Size; i++ )
-            {
-                if (_swarm.IsNeighbours(partNumber, i))
-                {
-                    double part_func = _swarm.Particles[i]._localBestFinalFunc;
-                    if (part_func < neighboursBestPosition)
-                    {
-                        neighboursBestPosition = part_func;
-                        bestNeighbour = i;
-                    }
-                }
-            }
+            double neighboursBestPosition = _swarm.BestFinalFunc_Other_Topology(partNumber);
 
             for (int i = 0; i < _swarm.Dimension; i++)
             {
@@ -267,12 +262,36 @@ namespace ParticleSwarm
 
                 double newVelocity_part3 =
                     globalVelocityRatio *                  
-                    (_swarm.Particles[bestNeighbour]._localBestPosition[i] - _currentPosition[i]);
+                    (neighboursBestPosition - _currentPosition[i]);
 
                 _velocity[i] = newVelocity_part1 + newVelocity_part2 + newVelocity_part3;
 
             }
 
+        }
+
+        private void CorrectVelocity_PSO()
+        {
+            double localVelocityRatio = _random.NextDouble() * _swarm.LocalVelocityRatio;
+            double globalVelocityRatio = _random.NextDouble() * _swarm.GlobalVelocityRatio;
+
+            double neighboursBestPosition = _swarm.BestFinalFunc_Clique(partNumber);
+
+            for (int i = 0; i < _swarm.Dimension; i++)
+            {
+                double newVelocity_part1 = _swarm.CurrentVelocityRatio * _velocity[i];
+
+                double newVelocity_part2 =
+                    localVelocityRatio *
+                    (_localBestPosition[i] - _currentPosition[i]);
+
+                double newVelocity_part3 =
+                    globalVelocityRatio *
+                    (neighboursBestPosition - _currentPosition[i]);
+
+                _velocity[i] = newVelocity_part1 + newVelocity_part2 + newVelocity_part3;
+
+            }
         }
 	}
 }

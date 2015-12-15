@@ -127,6 +127,50 @@ namespace ParticleSwarm
 			get { return _bestFinalFunc; }
 		}
 
+        
+        /// <summary>
+        /// Вычисляет лучшую позицию среди всех частиц кроме данной за все время поиска
+        /// </summary>
+        /// <param name="ign">текущая частица</param>
+        /// <returns>Лучшая позиция среди N-1 частиц</returns>
+        public double BestFinalFunc_Clique(int ign)
+        {
+            double bestfunc = double.MaxValue;
+            double partFunc = 0.0;
+            for (int i = 0; i < Particles.Length; i++)
+            {
+                if (i != ign)
+                {
+                    partFunc = Particles[i].LocalBestFinalFunc;
+                    if (partFunc < bestfunc)
+                        bestfunc = partFunc;
+                }
+            }
+            return bestfunc;
+        }
+
+        /// <summary>
+        /// Вычисляет лучшую позицию среди всех соседей данной частицы в текущей топологии все время поиска
+        /// </summary>
+        /// <param name="self">Текущая частица</param>
+        /// <returns>Лучшая позиция среди соседей</returns>
+        public double BestFinalFunc_Other_Topology(int self)
+        {
+            double neighboursBestPosition = double.MaxValue;
+
+            //Определение лучшего значения среди соседей
+            for (int i = 0; i < Size; i++)
+            {
+                if (IsNeighbours(self, i))
+                {
+                    double part_func = _particles[i].LocalBestFinalFunc;
+                    if (part_func < neighboursBestPosition)
+                        neighboursBestPosition = part_func;
+                }
+            }
+            return neighboursBestPosition;
+        }
+
 		double[] _bestPosition = null;
 
 		/// <summary>
