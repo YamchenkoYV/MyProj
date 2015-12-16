@@ -12,6 +12,7 @@ namespace ParticleGui.Tasks
     {
         double[] _minvalues;
         double[] _maxvalues;
+        double extr = 0.0;
 
         #region ITaskGui Members
 
@@ -29,6 +30,11 @@ namespace ParticleGui.Tasks
             Task task = new TaskRosenbrock(_minvalues, _maxvalues);
 
             return task;
+        }
+
+        public double Extr
+        {
+            get { return extr; }
         }
 
         public string Name

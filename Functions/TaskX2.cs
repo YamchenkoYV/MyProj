@@ -12,6 +12,8 @@ namespace Functions
 
 		}
 
+
+
 		public override double FinalFunction (double[] position)
 		{
 			double result = 0.0;

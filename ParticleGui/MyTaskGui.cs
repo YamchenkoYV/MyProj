@@ -12,6 +12,7 @@ namespace ParticleGui.Tasks
     {
         double[] _minvalues;
         double[] _maxvalues;
+        double extr = 0.0;
 
         #region ITaskGui Members
 
@@ -45,6 +46,12 @@ namespace ParticleGui.Tasks
 
             return task;
         }
+
+        public double Extr
+        {
+            get { return extr; }
+        }
+
 
         public string Name
         {

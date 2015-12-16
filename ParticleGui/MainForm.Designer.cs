@@ -58,6 +58,7 @@ namespace ParticleGui
             this._bestPosition = new System.Windows.Forms.TextBox();
             this._swarmGraph = new ZedGraph.ZedGraphControl();
             this._errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this._directory = new System.Windows.Forms.TextBox();
             algorithmBox = new System.Windows.Forms.GroupBox();
             label6 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
@@ -81,6 +82,7 @@ namespace ParticleGui
             // 
             // algorithmBox
             // 
+            algorithmBox.Controls.Add(this._directory);
             algorithmBox.Controls.Add(this.writeToFile);
             algorithmBox.Controls.Add(this._swarmSize);
             algorithmBox.Controls.Add(this._dimension);
@@ -402,6 +404,14 @@ namespace ParticleGui
             // 
             this._errorProvider.ContainerControl = this;
             // 
+            // _directory
+            // 
+            this._directory.Location = new System.Drawing.Point(229, 256);
+            this._directory.Name = "_directory";
+            this._directory.Size = new System.Drawing.Size(100, 20);
+            this._directory.TabIndex = 7;
+            this._directory.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -445,6 +455,7 @@ namespace ParticleGui
 		private System.Windows.Forms.ErrorProvider _errorProvider;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox writeToFile;
+        private System.Windows.Forms.TextBox _directory;
 	}
 }
 

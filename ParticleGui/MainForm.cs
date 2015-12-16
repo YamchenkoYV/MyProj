@@ -170,6 +170,8 @@ namespace ParticleGui
 
         Random rand = new Random();
 
+        String directory;
+
 		int RunIterations (int iterationCount, bool wtf=true)
 		{
             int i = 0;
@@ -198,17 +200,17 @@ namespace ParticleGui
                     _swarm.SetCurrentVelocityRatio(curVelRatio - 0.1);
                 }
 
-                if (i == k)
-                {
-                    k += dk;
-                    int first, second;
-                    do
-                    {
-                        first = rand.Next(0, _swarm.Size - 1);
-                        second = rand.Next(0, _swarm.Size - 1);
-                    } while ((first == second) && _swarm.IsNeighbours(first,second));
-                    _swarm.SetNeighbours(first,second);        
-                }
+//                 if (i == k)
+//                 {
+//                     k += dk;
+//                     int first, second;
+//                     do
+//                     {
+//                         first = rand.Next(0, _swarm.Size - 1);
+//                         second = rand.Next(0, _swarm.Size - 1);
+//                     } while ((first == second) && _swarm.IsNeighbours(first,second));
+//                     _swarm.SetNeighbours(first,second);        
+//                 }
 
                 if(writeToFile.Checked)
                   list.Add(_swarm.BestFinalFunc);
@@ -232,33 +234,38 @@ namespace ParticleGui
             if (writeToFile.Checked && wtf)
             {
                 
-                String path = "C:\\Users\\Юрий\\Desktop\\.net\\log\\FIPS";
+                String path = "C:\\Users\\Юрий\\Desktop\\.net\\log\\" + directory;
                 int files = 0;
                 System.IO.DirectoryInfo directoryInfo = new System.IO.DirectoryInfo(path);
-            if (directoryInfo.Exists)
-            {
-                // ищем в корневом каталоге
-                files += directoryInfo.GetFiles("*.*").Length;
-            }
-                Console.WriteLine(files);
-                String filename = "\\File_" + files.ToString() + ".txt";
-                path += filename;
-                
-                int counter = 0;
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@path))
+                if (directoryInfo.Exists)
                 {
-                    var ci = new CultureInfo("en-US");
-                    Thread.CurrentThread.CurrentCulture = ci;
-                    foreach (double numb in list)
+                    // ищем в корневом каталоге
+                    files += directoryInfo.GetFiles("*.*").Length;
+
+                    Console.WriteLine(files);
+                    String filename = "\\File_" + files.ToString() + ".txt";
+                    path += filename;
+
+                    int counter = 0;
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(@path))
                     {
-                       
-                        // If the line doesn't contain the word 'Second', write the line to the file.
-                        String str = counter.ToString() + " " + numb; 
-                        file.WriteLine(str);
-                        counter++;
+                        var ci = new CultureInfo("en-US");
+                        Thread.CurrentThread.CurrentCulture = ci;
+                        foreach (double numb in list)
+                        {
+
+                            // If the line doesn't contain the word 'Second', write the line to the file.
+                            String str = counter.ToString() + " " + numb;
+                            file.WriteLine(str);
+                            counter++;
+                        }
                     }
                 }
-            }
+                else
+                {
+                    Console.WriteLine("Directory isn't existed");
+                }
+           }
 
 			UpdateResults ();
             return i;
@@ -367,10 +374,10 @@ namespace ParticleGui
 			RunIterations (1000);
 		}
 
-        int MaxCountOfRuns = 100000;
+        int MaxCountOfRuns = 10000;
 
         
-        int N = 10; //число испытаний
+        int N = 100; //число испытаний
         int IterCounter = 0; //Число успешных попыток
         int CountOfSolv = 0; //Суммарное число вычислений целевой функции за все попытки
         double BestFuncValue = 0.0; //Лучшее значение ц.ф. за все попытки
@@ -381,7 +388,7 @@ namespace ParticleGui
         {
              IterCounter = 0; 
              CountOfSolv = 0; 
-             BestFuncValue = 0.0; 
+             BestFuncValue = double.MaxValue; 
              Ix = 0;
              GlobValueCounter = 0;
 
@@ -401,10 +408,10 @@ namespace ParticleGui
                 if (dI == 20)
                 {
 
-                if (_swarm.BestFinalFunc > BestFuncValue)
+                if (_swarm.BestFinalFunc < BestFuncValue)
                     BestFuncValue = _swarm.BestFinalFunc;
 
-                if (Math.Abs(_swarm.BestFinalFunc - 0.390013615128399) < 0.05) //Найден глобальный экстремум
+                if (Math.Abs(_swarm.BestFinalFunc - _currentTask.Extr) < 0.05) //Найден глобальный экстремум
                     GlobValueCounter++;
 
                
@@ -419,11 +426,20 @@ namespace ParticleGui
                 Console.WriteLine(Iter);
                 Initialize();
                 Iter++;
-                
+
             } while (Iter < N);
 
-            int dIx = Ix / IterCounter;
-            int dCountOfSolv = CountOfSolv / IterCounter;
+            int dIx, dCountOfSolv;
+            if (IterCounter != 0)
+            {
+                 dIx = Ix / IterCounter;
+                 dCountOfSolv = CountOfSolv / IterCounter;
+            }
+            else
+            {
+                dIx = 0;
+                dCountOfSolv = 0;
+            }
             double theo_frec = (double) IterCounter / (double)N;
             double glob_theo_frec = (double)GlobValueCounter / (double)N;
 
@@ -529,7 +545,10 @@ namespace ParticleGui
             }
         }
 
-
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            directory = _directory.Text;
+        }
 
 	}
 }

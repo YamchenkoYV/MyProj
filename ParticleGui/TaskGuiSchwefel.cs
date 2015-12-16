@@ -12,6 +12,7 @@ namespace ParticleGui.Tasks
 	{
 		double[] _minvalues;
 		double[] _maxvalues;
+        double extr;
 
 		#region ITaskGui Members
 
@@ -19,6 +20,7 @@ namespace ParticleGui.Tasks
 		{
 			_minvalues = new double[dimension];
 			_maxvalues = new double[dimension];
+            extr = -418.9829*dimension;
 
 			for (int i = 0; i < dimension; i++)
 			{
@@ -30,6 +32,12 @@ namespace ParticleGui.Tasks
 
 			return task;
 		}
+
+
+        public double Extr
+        {
+            get { return extr; }
+        }
 
 		public string Name
 		{

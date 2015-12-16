@@ -16,6 +16,11 @@ namespace ParticleGui
 		/// <summary>
 		/// Название задачи (показывается в выпадающем списке)
 		/// </summary>
+
+        double Extr
+        {
+            get;
+        }
 		string Name
 		{
 			get;
