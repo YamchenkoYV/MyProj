@@ -220,7 +220,7 @@ namespace ParticleGui
                 {                    
                     break;
                 }
-                else if (_swarm.Dif_Func <= E  && iterationCount>1000)
+                else if (_swarm.Dif_Func <= E  /*&& iterationCount>1000*/)
                 {
                     dI++;
                 }
@@ -405,11 +405,11 @@ namespace ParticleGui
                 else
                     RunIterations(MaxCountOfRuns, false);
 
-                if (dI == 20)
-                {
-
                 if (_swarm.BestFinalFunc < BestFuncValue)
                     BestFuncValue = _swarm.BestFinalFunc;
+
+                if (dI == 20)
+                {             
 
                 if (Math.Abs(_swarm.BestFinalFunc - _currentTask.Extr) < 0.05) //Найден глобальный экстремум
                     GlobValueCounter++;

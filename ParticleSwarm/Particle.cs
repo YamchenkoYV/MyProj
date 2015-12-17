@@ -163,7 +163,7 @@ namespace ParticleSwarm
 		/// </summary>
 		internal void NextIteration ()
 		{
-			CorrectVelocity_SDPSO ();
+			CorrectVelocity_FIPS ();
 			MoveSelf ();
 			CheckFinalFunc ();
 		}
@@ -275,7 +275,9 @@ namespace ParticleSwarm
             double localVelocityRatio = _random.NextDouble() * _swarm.LocalVelocityRatio;
             double globalVelocityRatio = _random.NextDouble() * _swarm.GlobalVelocityRatio;
 
-            double neighboursBestPosition = _swarm.BestFinalFunc_Clique(partNumber);
+            System.Collections.ArrayList list = _swarm.BestFinalFunc_Clique(partNumber);
+
+            int bestPart = (int)list[0];
 
             for (int i = 0; i < _swarm.Dimension; i++)
             {
@@ -287,9 +289,40 @@ namespace ParticleSwarm
 
                 double newVelocity_part3 =
                     globalVelocityRatio *
-                    (neighboursBestPosition - _currentPosition[i]);
+                    (_swarm.Particles[bestPart]._localBestPosition[i] - _currentPosition[i]);
 
                 _velocity[i] = newVelocity_part1 + newVelocity_part2 + newVelocity_part3;
+            }
+        }
+
+        private void CorrectVelocity_FIPS()
+        {
+            double localVelocityRatio = _random.NextDouble() * _swarm.LocalVelocityRatio;
+            double globalVelocityRatio = _random.NextDouble() * _swarm.GlobalVelocityRatio;
+            double[] ranks = new double[_swarm.Size];
+
+
+            System.Collections.ArrayList list = _swarm.BestFinalFunc_Clique(partNumber);
+
+            for (int i = 0; i < _swarm.Dimension; i++)
+            {
+                double newVelocity_part1 = _velocity[i];
+
+                double newVelocity_part2 =
+                    localVelocityRatio *
+                    (_localBestPosition[i] - _currentPosition[i]);
+
+                double newVelocity_part3= 0.0;
+                double r = 1;
+ 
+                foreach(int j in list)
+                {
+                    r *= 0.5;
+                     newVelocity_part3 += r*
+                        globalVelocityRatio *
+                        (_swarm.Particles[j]._localBestPosition[i] - _currentPosition[i]);
+                }
+                _velocity[i] = _swarm.CurrentVelocityRatio*(newVelocity_part1 + newVelocity_part2 + newVelocity_part3);
 
             }
         }

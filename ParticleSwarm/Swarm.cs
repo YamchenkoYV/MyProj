@@ -133,20 +133,28 @@ namespace ParticleSwarm
         /// </summary>
         /// <param name="ign">текущая частица</param>
         /// <returns>Лучшая позиция среди N-1 частиц</returns>
-        public double BestFinalFunc_Clique(int ign)
+        public System.Collections.ArrayList BestFinalFunc_Clique(int ign)
         {
             double bestfunc = double.MaxValue;
             double partFunc = 0.0;
+            System.Collections.ArrayList list = new System.Collections.ArrayList();
+      
             for (int i = 0; i < Particles.Length; i++)
             {
                 if (i != ign)
                 {
                     partFunc = Particles[i].LocalBestFinalFunc;
-                    if (partFunc < bestfunc)
-                        bestfunc = partFunc;
+                    int j = 0;
+                    for (j = 0; j < list.Count; j++)
+                    {
+                        int ind =(int)list[j];
+                        if (Particles[ind].LocalBestFinalFunc > partFunc)
+                            break;
+                    }
+                    list.Insert(j, i);
                 }
             }
-            return bestfunc;
+            return list;
         }
 
         /// <summary>
