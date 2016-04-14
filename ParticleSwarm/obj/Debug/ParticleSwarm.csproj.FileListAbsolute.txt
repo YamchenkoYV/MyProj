@@ -3,3 +3,7 @@ C:\Users\Юрий\Desktop\.net\ParticleSwarm\bin\Debug\ParticleSwarm.pdb
 C:\Users\Юрий\Desktop\.net\ParticleSwarm\obj\Debug\ParticleSwarm.dll
 C:\Users\Юрий\Desktop\.net\ParticleSwarm\obj\Debug\ParticleSwarm.pdb
 C:\Users\Юрий\Desktop\.net\ParticleSwarm\obj\Debug\ParticleSwarm.csprojResolveAssemblyReference.cache
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\ParticleSwarm\bin\Debug\ParticleSwarm.dll
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\ParticleSwarm\bin\Debug\ParticleSwarm.pdb
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\ParticleSwarm\obj\Debug\ParticleSwarm.dll
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\ParticleSwarm\obj\Debug\ParticleSwarm.pdb

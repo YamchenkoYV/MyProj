@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Diagnostics;
+using Functions;
 
 using ZedGraph;
 
@@ -39,16 +40,27 @@ namespace ParticleGui
 				_tasksComboBox.SelectedIndex = 0;
 			}
 
+            _methodsComboBox.Items.Add("Canonic PSO");
+            _methodsComboBox.Items.Add("Ranking FIPS");
+
+            _methodsComboBox.SelectedIndex = 0;
+
+            _topologiesComboBox.Items.Add("Клика");
+            _topologiesComboBox.Items.Add("Кольцо");
+            _topologiesComboBox.Items.Add("Динамическая");
+
+            _topologiesComboBox.SelectedIndex = 0;
+
 			SetGraphOptions ();
 		}
 
 		void CreateTasks ()
 		{
 
-			_tasks.Add (new TaskGuiX2 ());
-			_tasks.Add (new TaskGuiShwefel ());
+			_tasks.Add (new TaskGuiX2 ());			
 			_tasks.Add (new TaskGuiRastrigin ());
             _tasks.Add (new TaskGuiRosenbrock());
+            _tasks.Add (new TaskGuiShwefel ());
             _tasks.Add (new MyTaskGui());
 		}
 
@@ -138,7 +150,9 @@ namespace ParticleGui
                 swarmSize,
                 currentVelocityRatio,
                 localBestRatio,
-                globalBestRatio);
+                globalBestRatio,
+                _methodsComboBox.SelectedIndex,
+                _topologiesComboBox.SelectedIndex);
         }
 
 		ITaskGui _currentTask = null;
@@ -150,14 +164,17 @@ namespace ParticleGui
 			int swarmSize,
 			double currentVelocityRatio,
 			double localBestRatio,
-			double globalBestRatio)
+			double globalBestRatio,
+            int methodIndex,
+            int topologyIndex)
 		{
 			_swarm = new Swarm (task,
 				swarmSize,
 				currentVelocityRatio,
 				localBestRatio,
-				globalBestRatio
-				);
+				globalBestRatio,
+				methodIndex,
+                topologyIndex);
 
 			UpdateResults ();
 		}
@@ -176,8 +193,10 @@ namespace ParticleGui
 		{
             int i = 0;
             System.Collections.ArrayList list = new System.Collections.ArrayList();
-            int dk = (int)(0.8*MaxCountOfRuns/(_swarm.Size-2.0)); //Шаг
+            int n = _swarm.Size;
+//            int dk = (int)(0.8*MaxCountOfRuns/(_swarm.Size-2.0)); //Шаг
             int dsob = (int)(0.8 * MaxCountOfRuns / 5.0);//Шаг для собственного значения
+            int dk = (int)(2 * 0.8 * MaxCountOfRuns / (n * (n - 1) - 2 * n));
 
             int k = dk;
             int sob = dsob;
@@ -192,25 +211,40 @@ namespace ParticleGui
 
             for (i = 0; i < iterationCount; i++)
             {
-
-                if (i == sob)
+                if (i <= 0.8 * MaxCountOfRuns)
                 {
-                    sob += dsob;
-                    double curVelRatio = _swarm.CurrentVelocityRatio;
-                    _swarm.SetCurrentVelocityRatio(curVelRatio - 0.1);
-                }
+                    if (i == sob)
+                    {
+                        sob += dsob;
+                        double curVelRatio = _swarm.CurrentVelocityRatio;
+                        _swarm.SetCurrentVelocityRatio(curVelRatio - 0.1);
+//                        Console.WriteLine("Change of current Velocity");
+                    }
 
-//                 if (i == k)
-//                 {
-//                     k += dk;
-//                     int first, second;
-//                     do
-//                     {
-//                         first = rand.Next(0, _swarm.Size - 1);
-//                         second = rand.Next(0, _swarm.Size - 1);
-//                     } while ((first == second) && _swarm.IsNeighbours(first,second));
-//                     _swarm.SetNeighbours(first,second);        
-//                 }
+                    //Динамическая топология
+                    if (_swarm.Topology == 2)
+                    {
+                        System.Collections.ArrayList havNeib;
+                        System.Collections.ArrayList notNeib;
+
+                        if (i == k)
+                        {
+                            k += dk;
+                            int first, second;
+                            havNeib = _swarm.HavingNeighbours();
+                            if (havNeib.Count != 0) {
+                            first = rand.Next(0, havNeib.Count - 1);
+
+                            notNeib = _swarm.NotANaighboursOf((int)havNeib[first]); 
+                            second = rand.Next(0, notNeib.Count - 1);
+
+                            _swarm.SetNeighbours((int) havNeib[first], (int) notNeib[second]);
+
+//                            Console.WriteLine("Set Neighbours: " + havNeib[first] + " " + notNeib[second]); 
+                            }
+                        }
+                    }
+                }
 
                 if(writeToFile.Checked)
                   list.Add(_swarm.BestFinalFunc);
@@ -220,7 +254,7 @@ namespace ParticleGui
                 {                    
                     break;
                 }
-                else if (_swarm.Dif_Func <= E  /*&& iterationCount>1000*/)
+                else if (_swarm.Dif_Func <= E  && iterationCount>1000)
                 {
                     dI++;
                 }
@@ -341,7 +375,7 @@ namespace ParticleGui
 				pane.YAxis.Scale.Max = _currentTask.MaxValues[1];
 			}
 
-			LineItem particlesCurve = pane.AddCurve ("Все решения", particlesList,
+			LineItem particlesCurve = pane.AddCurve("Все решения", particlesList,
 				Color.Black, SymbolType.Default);
 
 			particlesCurve.Line.IsVisible = false;
@@ -384,67 +418,106 @@ namespace ParticleGui
         int Ix = 0; //Суммарная скорость сходимости за все попытки
        int GlobValueCounter = 0; //количество попыток достигших глобального экстремума
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-             IterCounter = 0; 
-             CountOfSolv = 0; 
-             BestFuncValue = double.MaxValue; 
-             Ix = 0;
-             GlobValueCounter = 0;
+       private void startTest_Click(object sender, EventArgs e)
+       {
+           IterCounter = 0;
+           CountOfSolv = 0;
+           BestFuncValue = double.MaxValue;
+           Ix = 0;
+           GlobValueCounter = 0;
 
-            int Iter = 0; //Попытки
-            dI = 0; //Область сходимости алгоритма
+           int Iter = 0; //Попытки
+           dI = 0; //Область сходимости алгоритма
+
+           String path = "C:\\Users\\Юрий\\Desktop\\Ямченко Ю.В.Мат-лы к дипл.работе\\.net\\log\\" + directory;
+           int files = 0;
+           System.IO.DirectoryInfo directoryInfo = new System.IO.DirectoryInfo(path);
+
+           String filename = "\\LOG.txt";
+           path += filename;
+
+           using (System.IO.StreamWriter file = new System.IO.StreamWriter(@path))
+           {
+               var ci = new CultureInfo("en-US");
+               Thread.CurrentThread.CurrentCulture = ci;
+
+
+               for (int i = 0; i < 3; i++)
+               {
+                   _tasksComboBox.SelectedIndex = i;
+
+                   for (int j = 1; j <= 4; j++)
+                   {
+                       _dimension.Value = (int)Math.Pow(2, j);
+
+                       IterCounter = 0;
+                       CountOfSolv = 0;
+                       BestFuncValue = double.MaxValue;
+                       Ix = 0;
+                       GlobValueCounter = 0;
+
+                       Iter = 0; //Попытки
+                       dI = 0; //Область сходимости алгоритма
+
+
+                       do
+                       {
+                           Initialize();
+                           //Запись в файл только последней итерации
+                           if (Iter == N - 1)
+                               RunIterations(MaxCountOfRuns, true);
+                           else
+                               RunIterations(MaxCountOfRuns, false);
+
+                           if (_swarm.BestFinalFunc < BestFuncValue)
+                               BestFuncValue = _swarm.BestFinalFunc;
+
+                           if (dI == 20)
+                           {
+
+                               if (Math.Abs(_swarm.BestFinalFunc - _currentTask.Extr) < 0.05) //Найден глобальный экстремум
+                                   GlobValueCounter++;
+
+
+                               IterCounter++;
+                               Ix += _swarm.Iteration - 10;
+                               CountOfSolv += _swarm.Counter;
+                           }
+                           dI = 0;
 
 
 
-            do
-            {
-                //Запись в файл только последней итерации
-                if(Iter == N-1)
-                    RunIterations(MaxCountOfRuns,true);
-                else
-                    RunIterations(MaxCountOfRuns, false);
+                           Console.WriteLine(Iter);
+                           //                 Console.WriteLine("Iteration " + _swarm.Iteration); 
+                           //                 _swarm.PrintNeighborsMatr();
+                           //                 Console.WriteLine("CurVelRatio " + _swarm.CurrentVelocityRatio);
 
-                if (_swarm.BestFinalFunc < BestFuncValue)
-                    BestFuncValue = _swarm.BestFinalFunc;
+                           Iter++;
 
-                if (dI == 20)
-                {             
+                       } while (Iter < N);
 
-                if (Math.Abs(_swarm.BestFinalFunc - _currentTask.Extr) < 0.05) //Найден глобальный экстремум
-                    GlobValueCounter++;
+                       int dIx, dCountOfSolv;
+                       if (IterCounter != 0)
+                       {
+                           dIx = Ix / IterCounter;
+                           dCountOfSolv = CountOfSolv / IterCounter;
+                       }
+                       else
+                       {
+                           dIx = 0;
+                           dCountOfSolv = 0;
+                       }
+                       double theo_frec = (double)IterCounter / (double)N;
+                       double glob_theo_frec = (double)GlobValueCounter / (double)N;
 
-               
-                    IterCounter++;
-                    Ix += _swarm.Iteration - 10;
-                    CountOfSolv += _swarm.Counter;
-                }
-                dI = 0;
-                
+                       file.Write(BestFuncValue + " " + dIx + " " + dCountOfSolv + " " + theo_frec + " " + glob_theo_frec);
+                       file.WriteLine();
 
-                
-                Console.WriteLine(Iter);
-                Initialize();
-                Iter++;
-
-            } while (Iter < N);
-
-            int dIx, dCountOfSolv;
-            if (IterCounter != 0)
-            {
-                 dIx = Ix / IterCounter;
-                 dCountOfSolv = CountOfSolv / IterCounter;
-            }
-            else
-            {
-                dIx = 0;
-                dCountOfSolv = 0;
-            }
-            double theo_frec = (double) IterCounter / (double)N;
-            double glob_theo_frec = (double)GlobValueCounter / (double)N;
-
-            _bestPosition.Text = PrintResult(dIx, dCountOfSolv, theo_frec, glob_theo_frec);
-        }
+                       _bestPosition.Text = PrintResult(dIx, dCountOfSolv, theo_frec, glob_theo_frec);
+                   }
+               }
+           }
+       }
 
         public string PrintResult(int Id, int COS, double theo_frec, double glob_theo_frec)
         {
@@ -550,5 +623,30 @@ namespace ParticleGui
             directory = _directory.Text;
         }
 
+        private void writeToFile_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!writeToFile.Checked)
+                _directory.ReadOnly = true;
+            else
+                _directory.ReadOnly = false;
+        }
+
+        private void NelderMead_CheckedChanged(object sender, EventArgs e)
+        {
+            if (NelderMeadCB.Checked)
+            {
+                NM_After.Enabled = true;
+                NM_For_One.Enabled = true;
+                NM_For_Ten_Pc.Enabled = true;
+                NM_For_All.Enabled = true;
+            }
+            else
+            {
+                NM_After.Enabled = false;
+                NM_For_One.Enabled = false;
+                NM_For_Ten_Pc.Enabled = false;
+                NM_For_All.Enabled = false;
+            }
+        }
 	}
 }

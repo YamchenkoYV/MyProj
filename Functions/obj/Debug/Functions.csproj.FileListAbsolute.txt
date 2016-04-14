@@ -5,3 +5,10 @@ C:\Users\Юрий\Desktop\.net\Functions\bin\Debug\ParticleSwarm.pdb
 C:\Users\Юрий\Desktop\.net\Functions\obj\Debug\Functions.csprojResolveAssemblyReference.cache
 C:\Users\Юрий\Desktop\.net\Functions\obj\Debug\Functions.dll
 C:\Users\Юрий\Desktop\.net\Functions\obj\Debug\Functions.pdb
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\Functions\obj\Debug\Functions.csprojResolveAssemblyReference.cache
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\Functions\obj\Debug\Functions.dll
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\Functions\obj\Debug\Functions.pdb
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\Functions\bin\Debug\Functions.dll
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\Functions\bin\Debug\Functions.pdb
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\Functions\bin\Debug\ParticleSwarm.dll
+C:\Users\Юрий\Desktop\Ямченко Ю.В.Мат-лы к дипл.работе\.net\Functions\bin\Debug\ParticleSwarm.pdb

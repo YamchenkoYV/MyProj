@@ -20,7 +20,9 @@ namespace ParticleSwarm
 			int swarmsize,
 			double currentVelocityRatio,
 			double localVelocityRatio,
-			double globalVelocityRatio)
+			double globalVelocityRatio,
+            int method,
+            int topology)
 		{
 			//Debug.Assert ((localVelocityRatio + globalVelocityRatio) > 4);
 
@@ -29,9 +31,23 @@ namespace ParticleSwarm
 			_localVelocityRatio = localVelocityRatio;
 			_globalVelocityRatio = globalVelocityRatio;
 			_iteration = 0;
+            _methodIndex = method;
+            _topologyIndex = topology;
 
 			_particles = CreateParticles (swarmsize);
 		}
+
+        int _methodIndex;
+        public int Method
+        {
+            get { return _methodIndex; }
+        }
+
+        int _topologyIndex;
+        public int Topology
+        {
+            get { return _topologyIndex; }
+        }
 
 		public void NextIteration ()
 		{
@@ -79,18 +95,79 @@ namespace ParticleSwarm
             neighbours[j * Size + i] = true;
         }
 
-		Particle[] CreateParticles (int swarmSize)
-		{
-            neighbours = new bool[swarmSize*swarmSize];
-            for (int i = 1; i < swarmSize-1; i++)
+        public void PrintNeighborsMatr()
+        {
+            for (int i = 0; i < Size; i++)
             {
-                neighbours[i * swarmSize + (i + 1)] = true;
-                neighbours[i * swarmSize + (i - 1)] = true;
+                for (int j = 0; j < Size; j++)
+                {
+                    if (neighbours[i * Size + j] == true)
+                        Console.Write(1);
+                    else
+                        Console.Write(0);
+                }
+                Console.WriteLine();
             }
-            neighbours[1] = true;
-            neighbours[swarmSize - 1] = true;
-            neighbours[(swarmSize-1)*swarmSize] = true;
-            neighbours[swarmSize*swarmSize - 2] = true;
+        }
+
+        public System.Collections.ArrayList HavingNeighbours()
+        {
+            System.Collections.ArrayList list = new System.Collections.ArrayList();
+
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    if (i != j && (neighbours[i * Size + j] == false))
+                    {
+                        list.Add(i);
+                        break;
+                    }
+                }
+            }
+
+                return list;
+        }
+
+        public System.Collections.ArrayList NotANaighboursOf(int part)
+        {
+            System.Collections.ArrayList list = new System.Collections.ArrayList();
+            for (int i = 0; i < Size; i++)
+            {
+                if (i != part && neighbours[part * Size + i] == false)
+                    list.Add(i);
+            }
+
+                return list;
+        }
+
+        Particle[] CreateParticles(int swarmSize)
+        {
+            neighbours = new bool[swarmSize * swarmSize];
+            if (Topology == 1 || Topology == 2) //Кольцо или динамическая (Кольцо->Клика)
+            {
+                
+                for (int i = 1; i < swarmSize - 1; i++)
+                {
+                    neighbours[i * swarmSize + (i + 1)] = true;
+                    neighbours[i * swarmSize + (i - 1)] = true;
+                }
+                neighbours[1] = true;
+                neighbours[swarmSize - 1] = true;
+                neighbours[(swarmSize - 1) * swarmSize] = true;
+                neighbours[swarmSize * swarmSize - 2] = true;
+            }
+            else if (Topology == 0)  //Клика
+            {
+                for (int i = 0; i < swarmSize; i++)
+                {
+                    for (int j = 0; j < swarmSize; j++)
+                    {
+                        if( j != i)
+                            neighbours[i * swarmSize + j] = true;
+                    }
+                }
+            }
 
 			Particle[] swarm = new Particle[swarmSize];
 			for (int i = 0; i < swarmSize; i++)
@@ -127,27 +204,58 @@ namespace ParticleSwarm
 			get { return _bestFinalFunc; }
 		}
 
-        
+
         /// <summary>
-        /// Вычисляет лучшую позицию среди всех частиц кроме данной за все время поиска
+        /// Вычисляет лучшую позицию среди всех соседей данной частицы в текущей топологии все время поиска
         /// </summary>
-        /// <param name="ign">текущая частица</param>
-        /// <returns>Лучшая позиция среди N-1 частиц</returns>
-        public System.Collections.ArrayList BestFinalFunc_Clique(int ign)
+        /// <param name="self">Текущая частица</param>
+        /// <returns>Лучшая позиция среди соседей</returns>
+        public int BestFinalFunc_PSO(int self)
         {
-            double bestfunc = double.MaxValue;
-            double partFunc = 0.0;
-            System.Collections.ArrayList list = new System.Collections.ArrayList();
-      
-            for (int i = 0; i < Particles.Length; i++)
-            {
-                if (i != ign)
+//            System.Collections.ArrayList list = new System.Collections.ArrayList();
+            int bestParticle = 0;
+            double bestFunc = double.MaxValue;
+                //Определение лучшего значения среди соседей
+                for (int i = 0; i < Size; i++)
                 {
-                    partFunc = Particles[i].LocalBestFinalFunc;
+                    if (IsNeighbours(self, i))
+                    {
+                        double partFunc = _particles[i].LocalBestFinalFunc;
+                        if (partFunc < bestFunc)
+                        {
+                            bestFunc = partFunc;
+                            bestParticle = i;
+                        }
+                    }
+                }
+            return bestParticle;
+        }
+
+        public System.Collections.ArrayList BestFinalFunc_FIPS(int self)
+        {
+            System.Collections.ArrayList list = new System.Collections.ArrayList();
+            int ign = 0;
+
+            for (int i = 0; i < Size; i++)
+            {
+                if (IsNeighbours(self, i))
+                {
+                    list.Add(i);
+                    ign = i;
+                    break;
+                }
+            }
+
+            //Составление списка соседей, упоряденных по возрастанию значений функции в текущих позициях
+            for (int i = 0; i < Size; i++)
+            {
+                if (IsNeighbours(self, i) && i != ign)
+                {
+                    double partFunc = _particles[i].CurrentFunc;
                     int j = 0;
                     for (j = 0; j < list.Count; j++)
                     {
-                        int ind =(int)list[j];
+                        int ind = (int)list[j];
                         if (Particles[ind].LocalBestFinalFunc > partFunc)
                             break;
                     }
@@ -155,28 +263,6 @@ namespace ParticleSwarm
                 }
             }
             return list;
-        }
-
-        /// <summary>
-        /// Вычисляет лучшую позицию среди всех соседей данной частицы в текущей топологии все время поиска
-        /// </summary>
-        /// <param name="self">Текущая частица</param>
-        /// <returns>Лучшая позиция среди соседей</returns>
-        public double BestFinalFunc_Other_Topology(int self)
-        {
-            double neighboursBestPosition = double.MaxValue;
-
-            //Определение лучшего значения среди соседей
-            for (int i = 0; i < Size; i++)
-            {
-                if (IsNeighbours(self, i))
-                {
-                    double part_func = _particles[i].LocalBestFinalFunc;
-                    if (part_func < neighboursBestPosition)
-                        neighboursBestPosition = part_func;
-                }
-            }
-            return neighboursBestPosition;
         }
 
 		double[] _bestPosition = null;
