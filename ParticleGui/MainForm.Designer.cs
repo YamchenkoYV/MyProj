@@ -145,7 +145,6 @@ namespace ParticleGui
             this.NM_For_All.Name = "NM_For_All";
             this.NM_For_All.Size = new System.Drawing.Size(85, 17);
             this.NM_For_All.TabIndex = 20;
-            this.NM_For_All.TabStop = true;
             this.NM_For_All.Text = "всех частиц";
             this.NM_For_All.UseVisualStyleBackColor = true;
             // 
@@ -157,13 +156,13 @@ namespace ParticleGui
             this.NM_For_Ten_Pc.Name = "NM_For_Ten_Pc";
             this.NM_For_Ten_Pc.Size = new System.Drawing.Size(120, 17);
             this.NM_For_Ten_Pc.TabIndex = 19;
-            this.NM_For_Ten_Pc.TabStop = true;
             this.NM_For_Ten_Pc.Text = "10% лучших частиц";
             this.NM_For_Ten_Pc.UseVisualStyleBackColor = true;
             // 
             // NM_For_One
             // 
             this.NM_For_One.AutoSize = true;
+            this.NM_For_One.Checked = true;
             this.NM_For_One.Enabled = false;
             this.NM_For_One.Location = new System.Drawing.Point(121, 47);
             this.NM_For_One.Name = "NM_For_One";

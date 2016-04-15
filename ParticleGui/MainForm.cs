@@ -72,6 +72,9 @@ namespace ParticleGui
             Initialize();
 		}
 
+        int partCountForNMead = 0;
+        int startNMeadAfter;
+
         private void Initialize()
         {
             _errorProvider.Clear();
@@ -135,7 +138,7 @@ namespace ParticleGui
 
             int dimension;
 
-            if (_tasksComboBox.SelectedIndex == 4)
+            if (_tasksComboBox.SelectedIndex == 4)    //Для задачи из экономики
                 dimension = 5;
             else
                 dimension = (int)_dimension.Value;
@@ -144,6 +147,33 @@ namespace ParticleGui
 
             _currentTask = _tasks[_tasksComboBox.SelectedIndex];
             Task task = _currentTask.CreateTask(dimension);
+
+            //////////////////////////////////////Part for Nelder Mead/////////////////////
+
+            try
+            {
+                startNMeadAfter = Convert.ToInt32(NM_After.Text,
+                    CultureInfo.InvariantCulture);
+            }
+            catch (FormatException)
+            {
+                _errorProvider.SetIconAlignment(NM_After,
+                    ErrorIconAlignment.MiddleLeft);
+
+                _errorProvider.SetError(NM_After, "Неправильный формат числа");
+                return;
+            }
+
+            if (NelderMeadCB.Checked)
+            {
+                if (NM_For_One.Checked)
+                    partCountForNMead = 1;
+                if (NM_For_Ten_Pc.Checked)
+                    partCountForNMead = swarmSize / 10;
+                if (NM_For_All.Checked)
+                    partCountForNMead = swarmSize;
+            }
+            /////////////////////////////////////////////////////////////////////////////////
 
             CreateSwarm(
                 task,
@@ -190,7 +220,11 @@ namespace ParticleGui
         String directory;
 
 		int RunIterations (int iterationCount, bool wtf=true)
-		{
+        {
+            if (_swarm == null)
+            {
+                return 0;
+            }
             int i = 0;
             System.Collections.ArrayList list = new System.Collections.ArrayList();
             int n = _swarm.Size;
@@ -201,16 +235,16 @@ namespace ParticleGui
             int k = dk;
             int sob = dsob;
 
-			if (_swarm == null)
-			{
-				return 0;
-			}
+			
 
 			Debug.Assert (_currentTask != null);
 
 
             for (i = 0; i < iterationCount; i++)
             {
+                if(NelderMeadCB.Checked && i == startNMeadAfter){   //Запуск локального алгоритма Нелдера-Мида после фиксированного числа итераций алгоритма роя частиц
+
+                }
                 if (i <= 0.8 * MaxCountOfRuns)
                 {
                     if (i == sob)
@@ -246,7 +280,7 @@ namespace ParticleGui
                     }
                 }
 
-                if(writeToFile.Checked)
+                if(writeToFile.Checked && wtf)   //maybe add && wtf
                   list.Add(_swarm.BestFinalFunc);
 
                 _swarm.NextIteration();
@@ -288,7 +322,6 @@ namespace ParticleGui
                         foreach (double numb in list)
                         {
 
-                            // If the line doesn't contain the word 'Second', write the line to the file.
                             String str = counter.ToString() + " " + numb;
                             file.WriteLine(str);
                             counter++;
@@ -411,8 +444,8 @@ namespace ParticleGui
         int MaxCountOfRuns = 10000;
 
         
-        int N = 100; //число испытаний
-        int IterCounter = 0; //Число успешных попыток
+        int N = 100; //число итераций Мультистарта
+        int sucIterCounter = 0; //Число успешных попыток
         int CountOfSolv = 0; //Суммарное число вычислений целевой функции за все попытки
         double BestFuncValue = 0.0; //Лучшее значение ц.ф. за все попытки
         int Ix = 0; //Суммарная скорость сходимости за все попытки
@@ -420,7 +453,14 @@ namespace ParticleGui
 
        private void startTest_Click(object sender, EventArgs e)
        {
-           IterCounter = 0;
+
+           if (_swarm == null)
+           {
+               Console.WriteLine("ERROR: Рой не создан!!");
+               return ;
+           }
+
+           sucIterCounter = 0;
            CountOfSolv = 0;
            BestFuncValue = double.MaxValue;
            Ix = 0;
@@ -442,15 +482,15 @@ namespace ParticleGui
                Thread.CurrentThread.CurrentCulture = ci;
 
 
-               for (int i = 0; i < 3; i++)
+               for (int i = 0; i < 3; i++)               //Меняем функцию
                {
                    _tasksComboBox.SelectedIndex = i;
 
                    for (int j = 1; j <= 4; j++)
                    {
-                       _dimension.Value = (int)Math.Pow(2, j);
+                       _dimension.Value = (int)Math.Pow(2, j);     //Меняем размерность вектора
 
-                       IterCounter = 0;
+                       sucIterCounter = 0;
                        CountOfSolv = 0;
                        BestFuncValue = double.MaxValue;
                        Ix = 0;
@@ -463,7 +503,7 @@ namespace ParticleGui
                        do
                        {
                            Initialize();
-                           //Запись в файл только последней итерации
+                           //Запись в файл только последней итерации Мультистарта
                            if (Iter == N - 1)
                                RunIterations(MaxCountOfRuns, true);
                            else
@@ -479,7 +519,7 @@ namespace ParticleGui
                                    GlobValueCounter++;
 
 
-                               IterCounter++;
+                               sucIterCounter++;
                                Ix += _swarm.Iteration - 10;
                                CountOfSolv += _swarm.Counter;
                            }
@@ -497,17 +537,17 @@ namespace ParticleGui
                        } while (Iter < N);
 
                        int dIx, dCountOfSolv;
-                       if (IterCounter != 0)
+                       if (sucIterCounter != 0)
                        {
-                           dIx = Ix / IterCounter;
-                           dCountOfSolv = CountOfSolv / IterCounter;
+                           dIx = Ix / sucIterCounter;
+                           dCountOfSolv = CountOfSolv / sucIterCounter;
                        }
                        else
                        {
                            dIx = 0;
                            dCountOfSolv = 0;
                        }
-                       double theo_frec = (double)IterCounter / (double)N;
+                       double theo_frec = (double)sucIterCounter / (double)N;
                        double glob_theo_frec = (double)GlobValueCounter / (double)N;
 
                        file.Write(BestFuncValue + " " + dIx + " " + dCountOfSolv + " " + theo_frec + " " + glob_theo_frec);
